@@ -9,26 +9,30 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import useRegisterOrganizer from "@/hooks/api/auth/useRegisterOrganizer";
 import { cn } from "@/lib/utils";
 import { useFormik } from "formik";
 import Link from "next/link";
-import { RegisterSchema } from "../schemas";
-import useRegisterUser from "@/hooks/api/auth/useRegisterUser";
+import { RegisterOrganizerSchema } from "../schemas";
 
-export function RegisterForm({
+export function RegisterOrganizerForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
-  const {mutateAsync: register, isPending} = useRegisterUser();
+  const {mutateAsync: register, isPending} = useRegisterOrganizer();
 
   const formik = useFormik({
     initialValues: {
       fullName: "",
       password: "",
       email: "",
-      role:"USER"
+      role:"USER",
+      profilePict: "",
+      phoneNumber: "",
+      bankAccount: "",
+      bankName: ""
     },
-    validationSchema: RegisterSchema,
+    validationSchema: RegisterOrganizerSchema,
     onSubmit: async (values) => {
      await register(values)
     },
@@ -38,7 +42,7 @@ export function RegisterForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">Register</CardTitle>
+          <CardTitle className="text-2xl">Register as Organizer</CardTitle>
           <CardDescription>
             Enter your email below to register to your account
           </CardDescription>
@@ -95,6 +99,74 @@ export function RegisterForm({
                   <p className="text-xs text-red-500">{formik.errors.password}</p>
                 )}
               </div>
+              <div className="grid gap-2">
+                <div className="flex items-center">
+                  <Label htmlFor="phoneNumber">Phone Number</Label>
+                </div>
+                <Input
+                  id="phoneNumber"
+                  name="phoneNumber"
+                  type="phoneNumber"
+                  required
+                  value={formik.values.phoneNumber}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                {!!formik.touched.phoneNumber && !!formik.errors.phoneNumber && (
+                  <p className="text-xs text-red-500">{formik.errors.phoneNumber}</p>
+                )}
+              </div>
+              <div className="grid gap-2">
+                <div className="flex items-center">
+                  <Label htmlFor="bankAccount">Bank Account</Label>
+                </div>
+                <Input
+                  id="bankAccount"
+                  name="bankAccount"
+                  type="bankAccount"
+                  required
+                  value={formik.values.bankAccount}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                {!!formik.touched.bankAccount && !!formik.errors.bankAccount && (
+                  <p className="text-xs text-red-500">{formik.errors.bankAccount}</p>
+                )}
+              </div>
+              <div className="grid gap-2">
+                <div className="flex items-center">
+                  <Label htmlFor="bankName">Bank Name</Label>
+                </div>
+                <Input
+                  id="bankName"
+                  name="bankName"
+                  type="bankName"
+                  required
+                  value={formik.values.bankName}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                {!!formik.touched.bankName && !!formik.errors.bankName && (
+                  <p className="text-xs text-red-500">{formik.errors.bankName}</p>
+                )}
+              </div>
+              <div className="grid gap-2">
+                <div className="flex items-center">
+                  <Label htmlFor="profilePict">Profile Picture</Label>
+                </div>
+                <Input
+                  id="profilePict"
+                  name="profilePict"
+                  type="file"
+                  required
+                  value={formik.values.profilePict}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                {!!formik.touched.profilePict && !!formik.errors.profilePict && (
+                  <p className="text-xs text-red-500">{formik.errors.profilePict}</p>
+                )}
+              </div>
               <Button type="submit" className="w-full" disabled={isPending}>
                 {isPending? "Loading..." : "Register"}
               </Button>
@@ -103,12 +175,6 @@ export function RegisterForm({
               Have an account?{" "}
               <Link href="/login" className="underline underline-offset-4">
                 Sign in
-              </Link>
-            </div>
-            <div className="mt-4 text-center text-sm">
-              Or register as{" "}
-              <Link href="/register-organizer" className="underline underline-offset-4">
-                Organizer
               </Link>
             </div>
           </form>

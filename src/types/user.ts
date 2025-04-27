@@ -4,9 +4,9 @@ export interface User {
   password: string;
   profilePict?: string | null;
   role: string;
-  bankAccount?: number | null;
+  bankAccount?: string | null;
   bankName?: string | null;
-  phoneNumber?: number | null;
+  phoneNumber?: string | null;
   fullName: string;
   referralCode?: string | null;
 }

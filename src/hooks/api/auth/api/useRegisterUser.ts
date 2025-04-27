@@ -11,7 +11,7 @@ const useRegisterUser = () => {
   const router = useRouter();
   return useMutation({
     mutationFn: async (payload: Omit<User, "id">) => {
-      const { data } = await axiosInstance.post("/auth/register-organizer", payload);
+      const { data } = await axiosInstance.post("/auth/register-user", payload);
 
       return data;
     },

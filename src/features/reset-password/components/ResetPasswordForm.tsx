@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import useResetPassword from "@/hooks/auth/api/useResetPassword";
+import useResetPassword from "@/hooks/api/auth/useResetPassword";
 import { Label } from "@radix-ui/react-label";
 import { useFormik } from "formik";
 import { FC } from "react";
