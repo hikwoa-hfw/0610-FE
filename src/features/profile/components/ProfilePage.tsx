@@ -1,32 +1,34 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import useForgotPassword from "@/hooks/api/auth/useForgotPassword";
+import useLogin from "@/hooks/api/auth/useLogin";
 import { cn } from "@/lib/utils";
 import { useFormik } from "formik";
-import { ForgotPasswordSchema } from "../schema";
+import Link from "next/link";
+import { ProfileSchema } from "../schemas";
 
-export function ForgotPasswordForm({
+export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
-  const { mutateAsync: ForgotPassword, isPending } = useForgotPassword();
+  const {mutateAsync: login, isPending} = useLogin();
 
   const formik = useFormik({
     initialValues: {
+      password: "",
       email: "",
     },
-    validationSchema: ForgotPasswordSchema,
+    validationSchema: ProfileSchema,
     onSubmit: async (values) => {
-      await ForgotPassword(values);
+     await login(values)
     },
   });
 
@@ -34,9 +36,9 @@ export function ForgotPasswordForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">Forgot Password</CardTitle>
+          <CardTitle className="text-2xl">Login</CardTitle>
           <CardDescription>
-            Enter your data below to reset your account
+            Enter your data below to login your account
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -58,10 +60,32 @@ export function ForgotPasswordForm({
                   <p className="text-xs text-red-500">{formik.errors.email}</p>
                 )}
               </div>
-
+              <div className="grid gap-2">
+                <div className="flex items-center">
+                  <Label htmlFor="password">Password</Label>
+                </div>
+                <Input
+                  id="password"
+                  name="password"
+                  type="password"
+                  required
+                  value={formik.values.password}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                {!!formik.touched.password && !!formik.errors.password && (
+                  <p className="text-xs text-red-500">{formik.errors.password}</p>
+                )}
+              </div>
               <Button type="submit" className="w-full" disabled={isPending}>
-                {isPending ? "Loading..." : "Send"}
+                {isPending? "Loading..." : "Login"}
               </Button>
+            </div>
+            <div className="mt-4 text-center text-sm">
+              Don&apos;t have an account?{" "}
+              <Link href="/register" className="underline underline-offset-4">
+                Sign up
+              </Link>
             </div>
           </form>
         </CardContent>

@@ -22,7 +22,7 @@ const useResetPassword = (token: string) => {
       );
       return data;
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       toast.success("Send email success, please check your email");
       router.push("/login")
     },
