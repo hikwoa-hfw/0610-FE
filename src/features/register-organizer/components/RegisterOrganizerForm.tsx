@@ -1,11 +1,11 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -14,29 +14,38 @@ import { cn } from "@/lib/utils";
 import { useFormik } from "formik";
 import Link from "next/link";
 import { RegisterOrganizerSchema } from "../schemas";
+import { ChangeEvent } from "react";
 
 export function RegisterOrganizerForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
-  const {mutateAsync: register, isPending} = useRegisterOrganizer();
+  const { mutateAsync: register, isPending } = useRegisterOrganizer();
 
   const formik = useFormik({
     initialValues: {
       fullName: "",
       password: "",
       email: "",
-      role:"USER",
-      profilePict: "",
+      role: "USER",
+      profilePict: null,
       phoneNumber: "",
       bankAccount: "",
-      bankName: ""
+      bankName: "",
     },
     validationSchema: RegisterOrganizerSchema,
     onSubmit: async (values) => {
-     await register(values)
+      await register(values);
     },
   });
+
+  const onChangeProfilePict = (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+
+    if (files && files.length) {
+      formik.setFieldValue("profilePict", files[0]);
+    }
+  };
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -63,7 +72,9 @@ export function RegisterOrganizerForm({
                   onBlur={formik.handleBlur}
                 />
                 {!!formik.touched.fullName && !!formik.errors.fullName && (
-                  <p className="text-xs text-red-500">{formik.errors.fullName}</p>
+                  <p className="text-xs text-red-500">
+                    {formik.errors.fullName}
+                  </p>
                 )}
               </div>
               <div className="grid gap-2">
@@ -96,7 +107,9 @@ export function RegisterOrganizerForm({
                   onBlur={formik.handleBlur}
                 />
                 {!!formik.touched.password && !!formik.errors.password && (
-                  <p className="text-xs text-red-500">{formik.errors.password}</p>
+                  <p className="text-xs text-red-500">
+                    {formik.errors.password}
+                  </p>
                 )}
               </div>
               <div className="grid gap-2">
@@ -112,9 +125,12 @@ export function RegisterOrganizerForm({
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
-                {!!formik.touched.phoneNumber && !!formik.errors.phoneNumber && (
-                  <p className="text-xs text-red-500">{formik.errors.phoneNumber}</p>
-                )}
+                {!!formik.touched.phoneNumber &&
+                  !!formik.errors.phoneNumber && (
+                    <p className="text-xs text-red-500">
+                      {formik.errors.phoneNumber}
+                    </p>
+                  )}
               </div>
               <div className="grid gap-2">
                 <div className="flex items-center">
@@ -129,9 +145,12 @@ export function RegisterOrganizerForm({
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
-                {!!formik.touched.bankAccount && !!formik.errors.bankAccount && (
-                  <p className="text-xs text-red-500">{formik.errors.bankAccount}</p>
-                )}
+                {!!formik.touched.bankAccount &&
+                  !!formik.errors.bankAccount && (
+                    <p className="text-xs text-red-500">
+                      {formik.errors.bankAccount}
+                    </p>
+                  )}
               </div>
               <div className="grid gap-2">
                 <div className="flex items-center">
@@ -147,7 +166,9 @@ export function RegisterOrganizerForm({
                   onBlur={formik.handleBlur}
                 />
                 {!!formik.touched.bankName && !!formik.errors.bankName && (
-                  <p className="text-xs text-red-500">{formik.errors.bankName}</p>
+                  <p className="text-xs text-red-500">
+                    {formik.errors.bankName}
+                  </p>
                 )}
               </div>
               <div className="grid gap-2">
@@ -159,16 +180,18 @@ export function RegisterOrganizerForm({
                   name="profilePict"
                   type="file"
                   required
-                  value={formik.values.profilePict}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
+                  onChange={onChangeProfilePict}
+                  accept="image/*"
                 />
-                {!!formik.touched.profilePict && !!formik.errors.profilePict && (
-                  <p className="text-xs text-red-500">{formik.errors.profilePict}</p>
-                )}
+                {!!formik.touched.profilePict &&
+                  !!formik.errors.profilePict && (
+                    <p className="text-xs text-red-500">
+                      {formik.errors.profilePict}
+                    </p>
+                  )}
               </div>
               <Button type="submit" className="w-full" disabled={isPending}>
-                {isPending? "Loading..." : "Register"}
+                {isPending ? "Loading..." : "Register"}
               </Button>
             </div>
             <div className="mt-4 text-center text-sm">
