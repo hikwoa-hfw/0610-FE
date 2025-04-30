@@ -5,6 +5,7 @@ import { useAuthStore } from "@/stores/auth";
 import { User } from "@/types/user";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -18,7 +19,8 @@ const useLogin = () => {
 
       return data;
     },
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
+      await signIn("credentials", {...data, redirect:false})
       toast.success("Login Success");
       onAuthSuccess({ user: data.user , accessToken: data.accessToken });
       router.push("/")

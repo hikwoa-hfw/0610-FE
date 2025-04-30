@@ -11,7 +11,20 @@ const useRegisterOrganizer = () => {
   const router = useRouter();
   return useMutation({
     mutationFn: async (payload: Omit<User, "id">) => {
-      const { data } = await axiosInstance.post("/auth/register-organizer", payload);
+      const createOrganizerForm = new FormData();
+
+      createOrganizerForm.append("profilePict", payload.profilePict!);
+      createOrganizerForm.append("bankAccount", payload.bankAccount!);
+      createOrganizerForm.append("bankName", payload.bankName!);
+      createOrganizerForm.append("phoneNumber", payload.phoneNumber!);
+      createOrganizerForm.append("email", payload.email);
+      createOrganizerForm.append("password", payload.password);
+      createOrganizerForm.append("fullName", payload.fullName);
+
+      const { data } = await axiosInstance.post(
+        "/auth/register-organizer",
+        createOrganizerForm,
+      );
 
       return data;
     },
