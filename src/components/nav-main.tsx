@@ -17,7 +17,7 @@ export function NavMain({
   items: {
     title: string;
     url: string;
-    icon?: Icon;
+    icon?: any;
   }[];
   onItemClick: (url: string) => void; // Menambahkan prop onItemClick
 }) {
@@ -29,7 +29,7 @@ export function NavMain({
           <SidebarMenuItem className="flex items-center gap-2">
             <SidebarMenuButton
               tooltip="Quick Create Event"
-              className="bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear hover:cursor-pointer"
               onClick={() => onItemClick("/quick-create-event")} // Contoh URL untuk quick create
             >
               <IconCirclePlusFilled />

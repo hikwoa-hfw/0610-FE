@@ -1,12 +1,13 @@
-'use client'
+"use client";
 
 import {
-    Pagination,
-    PaginationContent,
-    PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
 } from "@/components/ui/pagination";
 import { PaginationMeta } from "@/types/pagination";
 
@@ -40,15 +41,19 @@ const PaginationSection: FC<PaginationSectionProps> = ({
     <Pagination>
       <PaginationContent>
         <PaginationItem>
-          <PaginationPrevious onClick={handlePrev}/>
+          <PaginationPrevious onClick={handlePrev} />
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#" isActive>
+            {page}
+          </PaginationLink>
         </PaginationItem>
 
         <PaginationItem>
-          <PaginationLink>{page}</PaginationLink>
+          <PaginationEllipsis />
         </PaginationItem>
-
         <PaginationItem>
-          <PaginationNext onClick={handleNext}/>
+          <PaginationNext onClick={handleNext} />
         </PaginationItem>
       </PaginationContent>
     </Pagination>

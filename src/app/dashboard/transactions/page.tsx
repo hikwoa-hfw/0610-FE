@@ -1,18 +1,20 @@
-import { AppSidebar } from "@/components/app-sidebar";
-import { SiteHeader } from "@/components/site-header";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import React from "react";
+// import TransactionPage from '@/features/dashboard/events-transactions/TransactionsPage'
+import EventsTransactionsPage from "@/features/dashboard/transactions/EventsTransactionsPage";
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
-const Transaction = () => {
+const EventsTransactions = async () => {
+  const session = await auth();
+
+  if (!session) {
+    return redirect("/login");
+  }
+
   return (
-    <SidebarProvider>
-      <AppSidebar variant="inset" />
-      <SidebarInset>
-        <SiteHeader />
-        
-      </SidebarInset>
-    </SidebarProvider>
+    <div>
+      <EventsTransactionsPage />
+    </div>
   );
 };
 
-export default Transaction;
+export default EventsTransactions;

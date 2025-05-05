@@ -27,7 +27,6 @@ export function RegisterOrganizerForm({
       fullName: "",
       password: "",
       email: "",
-      role: "USER",
       profilePict: null,
       phoneNumber: "",
       bankAccount: "",

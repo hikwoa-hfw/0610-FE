@@ -1,28 +1,6 @@
 "use client";
 
-import * as React from "react";
-import {
-  IconCamera,
-  IconChartBar,
-  IconDashboard,
-  IconDatabase,
-  IconFileAi,
-  IconFileDescription,
-  IconFileWord,
-  IconFolder,
-  IconHelp,
-  IconInnerShadowTop,
-  IconListDetails,
-  IconReport,
-  IconSearch,
-  IconSettings,
-  IconTransactionBitcoin,
-  IconUsers,
-} from "@tabler/icons-react";
-import { AiOutlineTransaction } from "react-icons/ai";
-import { NavDocuments } from "@/components/nav-documents";
 import { NavMain } from "@/components/nav-main";
-import { NavSecondary } from "@/components/nav-secondary";
 import { NavUser } from "@/components/nav-user";
 import {
   Sidebar,
@@ -33,7 +11,18 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import {
+  IconCashBanknote,
+  IconChartBar,
+  IconDashboard,
+  IconInnerShadowTop,
+  IconListDetails,
+  IconTransactionBitcoin,
+} from "@tabler/icons-react";
+import { UsersIcon } from "lucide-react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import * as React from "react";
 
 const data = {
   user: {
@@ -55,18 +44,24 @@ const data = {
     {
       title: "Transactions",
       url: "/dashboard/transactions",
-      icon: IconTransactionBitcoin,
+      icon: IconCashBanknote,
     },
     {
-      title: "Data Statistics",
-      url: "/dashboard/statistics",
-      icon: IconChartBar,
+      title: "Attendees",
+      url: "/dashboard/attendees",
+      icon: UsersIcon,
     },
   ],
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const router = useRouter();
+  const session = useSession();
+  const user = {
+    name: session.data?.user.fullName,
+    email: session.data?.user.email,
+    avatar: session.data?.user.profilePict,
+  };
 
   return (
     <Sidebar collapsible="offcanvas" {...props}>
@@ -78,8 +73,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
               <a href="#">
-                <IconInnerShadowTop className="!size-5" />
-                <span className="text-base font-semibold">Acme Inc.</span>
+                <span className="text-base font-semibold">Vibration Inc.</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -88,11 +82,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <NavMain
           items={data.navMain}
-          onItemClick={(url:any) => router.push(url)}
+          onItemClick={(url: any) => router.push(url)}
         />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>
   );

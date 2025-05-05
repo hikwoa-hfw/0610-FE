@@ -10,7 +10,7 @@ import { toast } from "sonner";
 const useRegisterOrganizer = () => {
   const router = useRouter();
   return useMutation({
-    mutationFn: async (payload: Omit<User, "id">) => {
+    mutationFn: async (payload: Omit<User, "id" | "role">) => {
       const createOrganizerForm = new FormData();
 
       createOrganizerForm.append("profilePict", payload.profilePict!);
