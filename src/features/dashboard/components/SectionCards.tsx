@@ -10,6 +10,7 @@ import useGetEventsCount from "@/hooks/api/events/useGetEventsCount";
 import useGetTransactionsPaid from "@/hooks/api/transactions/useGetTransactionPaid";
 import useGetTransactionRevenue from "@/hooks/api/transactions/useGetTransactionRevenue";
 import { Loader2 } from "lucide-react";
+import SkeletonCard from "./SkeletonCard";
 
 export const SectionCards = () => {
   const { data: customer, isPending: pendingTransaction } =
@@ -17,12 +18,16 @@ export const SectionCards = () => {
   const { data: event, isPending: pendingEvent } = useGetEventsCount();
   const { data: revenue, isPending: pendingRevenue } =
     useGetTransactionRevenue();
+  const formatter = new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    minimumFractionDigits: 0, 
+    maximumFractionDigits: 0, 
+  });
 
   if (pendingTransaction || pendingEvent || pendingRevenue) {
     return (
-      <div className="h-40 flex items-center justify-center">
-        <Loader2 className="animate-spin size-8"/>;
-      </div>
+        <SkeletonCard />
     );
   }
 
@@ -32,7 +37,9 @@ export const SectionCards = () => {
         <CardHeader>
           <CardDescription className="text-xl">Total Revenue</CardDescription>
           <CardTitle className="text-xl font-semibold tabular-nums @[250px]/card:text-4xl">
-            Rp {revenue?.totalPrice}
+            {revenue?.totalPrice
+              ? formatter.format(revenue.totalPrice)
+              : "Rp 0"}
           </CardTitle>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">

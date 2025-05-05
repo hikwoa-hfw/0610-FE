@@ -1,4 +1,3 @@
-"use client";
 import {
   Card,
   CardDescription,
@@ -6,65 +5,59 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import useGetEventsCount from "@/hooks/api/events/useGetEventsCount";
-import useGetTransactionsPaid from "@/hooks/api/transactions/useGetTransactionPaid";
-import useGetTransactionRevenue from "@/hooks/api/transactions/useGetTransactionRevenue";
-import { Loader2 } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
+import React from "react";
 
-export const SectionCards = () => {
-  const { data: customer, isPending: pendingTransaction } =
-    useGetTransactionsPaid();
-  const { data: event, isPending: pendingEvent } = useGetEventsCount();
-  const { data: revenue, isPending: pendingRevenue } =
-    useGetTransactionRevenue();
-
-  if (pendingTransaction || pendingEvent || pendingRevenue) {
-    return (
-      <div className="h-40 flex items-center justify-center">
-        <Loader2 className="animate-spin size-8"/>;
-      </div>
-    );
-  }
-
+const SkeletonCard = () => {
   return (
     <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-3">
       <Card className="@container/card">
         <CardHeader>
-          <CardDescription className="text-xl">Total Revenue</CardDescription>
+          <CardDescription className="text-xl">
+            <Skeleton className="h-[30px] w-[405px] bg-gray-200"/>
+          </CardDescription>
           <CardTitle className="text-xl font-semibold tabular-nums @[250px]/card:text-4xl">
-            Rp {revenue?.totalPrice}
+            <Skeleton className="h-[30px] w-[405px] bg-gray-200" />
           </CardTitle>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           <div className="text-muted-foreground">
-            Aggregate revenue from all events organized by you.
+            <Skeleton className="h-[30px] w-[405px] bg-gray-200" />
           </div>
         </CardFooter>
       </Card>
       <Card className="@container/card">
         <CardHeader>
-          <CardDescription className="text-xl">Total Customer</CardDescription>
+          <CardDescription className="text-xl">
+            <Skeleton className="h-[30px] w-[405px] bg-gray-200" />
+          </CardDescription>
           <CardTitle className="text-xl font-semibold tabular-nums @[250px]/card:text-4xl">
-            {customer?.meta.total}
+            <Skeleton className="h-[30px] w-[405px] bg-gray-200" />
           </CardTitle>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           <div className="text-muted-foreground">
-            Total number of customers recorded in the system.
+            <Skeleton className="h-[30px] w-[405px] bg-gray-200" />
           </div>
         </CardFooter>
       </Card>
       <Card className="@container/card">
         <CardHeader>
-          <CardDescription className="text-xl">Total Events</CardDescription>
+          <CardDescription className="text-xl">
+            <Skeleton className="h-[30px] w-[405px] bg-gray-200"/>
+          </CardDescription>
           <CardTitle className="text-xl font-semibold tabular-nums @[250px]/card:text-4xl">
-            {event?.meta.total}
+            <Skeleton className="h-[30px] w-[405px] bg-gray-200" />
           </CardTitle>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
-          <div className="text-muted-foreground">Total events managed.</div>
+          <div className="text-muted-foreground">
+            <Skeleton className="h-[30px] w-[405px] bg-gray-200" />
+          </div>
         </CardFooter>
       </Card>
     </div>
   );
 };
+
+export default SkeletonCard;
