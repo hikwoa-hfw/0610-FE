@@ -1,14 +1,15 @@
 "use client";
 
-import { useAuthStore } from "@/stores/auth";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
   const router = useRouter();
+  
   const session = useSession()
   const logout = () => {
+    signOut();
     signOut();
     router.push("/login");
   };

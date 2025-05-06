@@ -4,24 +4,25 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { toast } from "sonner";
 
-interface UpdateUserPayload {
-  id: number;
-  fullName?: string;
-  email?: string;
-  password?: string;
-  profilePicture?: File | null;
-  phoneNumber?: string;
-  point?: number;
-  pointExpired?: Date;
-  bankAccount?: string | null;
+interface Payload extends Omit<User, "profilePict"> {
+  profilePict: File | null;
 }
 
-const useUpdateUser = () => {
+const useUpdateOrganizer = () => {
   const queryClient = useQueryClient();
   const {axiosInstance} = useAxios()
 
   return useMutation({
-    mutationFn: async (payload: User) => {
+    mutationFn: async (payload: Partial<Payload>) => {
+      const {
+        fullName,
+        email,
+        password,
+        phoneNumber,
+        bankAccount,
+        bankName,
+        profilePict,
+      } = payload;
       const updateUserForm = new FormData();
 
       if (payload.fullName) updateUserForm.append("fullName", payload.fullName);
@@ -29,15 +30,19 @@ const useUpdateUser = () => {
       if (payload.password) updateUserForm.append("password", payload.password);
       if (payload.phoneNumber)
         updateUserForm.append("phoneNumber", payload.phoneNumber);
-      if (payload.profilePict) {
-        updateUserForm.append("profilePicture", payload.profilePict);
-      }
       if (payload.bankAccount) {
         updateUserForm.append("bankAccount", payload.bankAccount);
       }
+      if (payload.bankName) {
+        updateUserForm.append("bankName", payload.bankName);
+      }
+      
+      if (payload.profilePict) {
+        updateUserForm.append("profilePict", payload.profilePict);
+      }
 
       const { data } = await axiosInstance.patch(
-        `/users/${payload.id}`,
+        `/users/update-organizer`,
         updateUserForm,
       );
 
@@ -47,9 +52,11 @@ const useUpdateUser = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
-      console.log("User Updated Successfully");
+      console.log("Account Updated Successfully");
     },
     onError: (error: AxiosError<any>) => {
+      console.log(error);
+      
       const errorMessage =
         error.response?.data?.message ||
         error.response?.data ||
@@ -59,4 +66,4 @@ const useUpdateUser = () => {
   });
 };
 
-export default useUpdateUser;
+export default useUpdateOrganizer;

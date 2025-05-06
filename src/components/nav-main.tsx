@@ -30,7 +30,7 @@ export function NavMain({
             <SidebarMenuButton
               tooltip="Quick Create Event"
               className="bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear hover:cursor-pointer"
-              onClick={() => onItemClick("/quick-create-event")} // Contoh URL untuk quick create
+              onClick={() => onItemClick("/dashboard/events/create")} // Contoh URL untuk quick create
             >
               <IconCirclePlusFilled />
               <span>Quick Create Event</span>

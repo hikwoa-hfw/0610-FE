@@ -1,10 +1,6 @@
-import { AppSidebar } from "@/components/app-sidebar";
-import { SiteHeader } from "@/components/site-header";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import TransactionsManagementPage from "@/features/dashboard/transactions/TransactionsManagementPage";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import React from "react";
 
 const Transaction = async ({
   params,
@@ -13,7 +9,7 @@ const Transaction = async ({
 }) => {
   const session = await auth();
 
-  if (!session) {
+  if (session?.user.role !== "ORGANIZER") {
     return redirect("/login");
   }
 

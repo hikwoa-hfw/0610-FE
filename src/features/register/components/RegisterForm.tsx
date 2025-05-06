@@ -26,6 +26,7 @@ export function RegisterForm({
       fullName: "",
       password: "",
       email: "",
+      referralCodeUsed: "",
       role:"USER"
     },
     validationSchema: RegisterSchema,
@@ -38,9 +39,9 @@ export function RegisterForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">Register</CardTitle>
+          <CardTitle className="text-2xl">Register <span className="font-bold text-blue-700">Vibration</span> </CardTitle>
           <CardDescription>
-            Enter your email below to register to your account
+            Enter your data below to create account
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -95,7 +96,24 @@ export function RegisterForm({
                   <p className="text-xs text-red-500">{formik.errors.password}</p>
                 )}
               </div>
-              <Button type="submit" className="w-full" disabled={isPending}>
+              
+              <div className="grid gap-2">
+                <div className="flex items-center">
+                  <Label htmlFor="referralCodeUsed">Refferal Code</Label>
+                </div>
+                <Input
+                  id="referralCodeUsed"
+                  name="referralCodeUsed"
+                  type="referralCodeUsed"
+                  value={formik.values.referralCodeUsed}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                {!!formik.touched.referralCodeUsed && !!formik.errors.referralCodeUsed && (
+                  <p className="text-xs text-red-500">{formik.errors.referralCodeUsed}</p>
+                )}
+              </div>
+              <Button type="submit" className="w-full bg-blue-900 hover:bg-blue-600" disabled={isPending} >
                 {isPending? "Loading..." : "Register"}
               </Button>
             </div>

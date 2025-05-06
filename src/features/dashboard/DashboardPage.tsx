@@ -1,11 +1,9 @@
-import { AppSidebar } from "@/components/app-sidebar"
-import { SiteHeader } from "@/components/site-header"
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
+import { AppSidebar } from "@/components/app-sidebar";
+import { SiteHeader } from "@/components/site-header";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
-import { ChartAreaInteractiveSales } from "@/components/chart-area-interactive-sales"
-import { SectionCards } from "./components/SectionCards"
-
-
+import { ChartAreaInteractiveSales } from "@/components/chart-area-interactive-sales";
+import { SectionCards } from "./components/SectionCards";
 
 export default function DashboardPage() {
   return (
@@ -25,5 +23,5 @@ export default function DashboardPage() {
         </div>
       </SidebarInset>
     </SidebarProvider>
-  )
+  );
 }

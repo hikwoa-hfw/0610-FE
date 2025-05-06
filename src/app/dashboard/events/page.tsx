@@ -4,7 +4,7 @@ import EventsTransactionsPage from "@/features/dashboard/transactions/EventsTran
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 
-const EventsTransactions = async () => {
+const Events = async () => {
   const session = await auth();
 
   if (!session) {
@@ -18,4 +18,4 @@ const EventsTransactions = async () => {
   );
 };
 
-export default EventsTransactions;
+export default Events;
