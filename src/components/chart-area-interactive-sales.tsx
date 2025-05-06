@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import {
   Card,
@@ -51,7 +51,7 @@ export function ChartAreaInteractiveSales() {
   // Update time range based on device
   useEffect(() => {
     if (isMobile) {
-      setTimeRange("7d");
+      setTimeRange("7d")
     }
   }, [isMobile]);
 
@@ -134,9 +134,9 @@ export function ChartAreaInteractiveSales() {
     let daysToSubtract = 365; // 12 months
 
     if (timeRange === "30d") {
-      daysToSubtract = 30;
+      daysToSubtract = 30
     } else if (timeRange === "7d") {
-      daysToSubtract = 7;
+      daysToSubtract = 7
     }
 
     const startDate = new Date(today);
@@ -314,5 +314,5 @@ export function ChartAreaInteractiveSales() {
         </ChartContainer>
       </CardContent>
     </Card>
-  );
+  )
 }
