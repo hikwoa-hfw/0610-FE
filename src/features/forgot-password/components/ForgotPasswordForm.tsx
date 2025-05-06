@@ -36,7 +36,7 @@ export function ForgotPasswordForm({
         <CardHeader>
           <CardTitle className="text-2xl">Forgot Password</CardTitle>
           <CardDescription>
-            Enter your data below to reset your account
+            Enter your data below to reset your password.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -59,7 +59,7 @@ export function ForgotPasswordForm({
                 )}
               </div>
 
-              <Button type="submit" className="w-full" disabled={isPending}>
+              <Button type="submit" className="w-full bg-blue-800 hover:cursor-pointer hover:bg-blue-700" disabled={isPending}>
                 {isPending ? "Loading..." : "Send"}
               </Button>
             </div>

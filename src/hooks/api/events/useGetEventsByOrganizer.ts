@@ -12,15 +12,17 @@ const useGetEventsByOrganizer = (queries?: useGetEventsByOrganizerQueries) => {
   const { axiosInstance } = useAxios();
 
   return useQuery({
-    queryKey: ["events"],
+    queryKey: ["eventsbyorganizer", queries],
     queryFn: async () => {
-      const { data } = await axiosInstance.get<PageableResponse<Event>>("/events/organizer", {
-        params: queries
-      });
+      const { data } = await axiosInstance.get<PageableResponse<Event>>(
+        "/events/organizer",
+        {
+          params: queries,
+        },
+      );
       console.log(data);
       return data;
     },
-    
   });
 };
 

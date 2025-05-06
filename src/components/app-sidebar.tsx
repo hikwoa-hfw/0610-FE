@@ -25,6 +25,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import * as React from "react";
 import Unauthorized from "./Unauthorized";
+import Link from "next/link";
 
 const data = {
   user: {
@@ -76,9 +77,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <a href="#">
-                <span className="text-base font-semibold">Vibration Inc.</span>
-              </a>
+              <Link href="#">
+                <span className="text-xl font-bold text-blue-700">Vibration Inc.</span>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

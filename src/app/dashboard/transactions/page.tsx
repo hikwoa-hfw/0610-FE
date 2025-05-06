@@ -5,10 +5,9 @@ import { redirect } from "next/navigation";
 
 const EventsTransactions = async () => {
   const session = await auth();
-
-  if (!session) {
-    return redirect("/login");
-  }
+  
+  if (!session) return redirect("/login");
+  if (session.user.role !== "ORGANIZER") redirect("/");
 
   return (
     <div>

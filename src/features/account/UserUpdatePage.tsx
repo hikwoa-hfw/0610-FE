@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import useGetUser from "@/hooks/api/user/useGetUser";
-import useUpdateOrganizer from "@/hooks/api/user/useUpdateOrganizer";
+import useUpdateUser from "@/hooks/api/user/useUpdateUser";
 import { getChangedValues } from "@/utils/getChangedValue";
 import { useFormik } from "formik";
 import { ArrowLeft } from "lucide-react";
@@ -14,19 +14,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { type ChangeEvent, useRef, useState } from "react";
 
-export default function UpdateProfileForm() {
+export default function UserUpdatePage() {
   const { data: getUser, isPending: pendingGet } = useGetUser();
-  const { mutateAsync: updateUser, isPending: pendingUpdate } =
-    useUpdateOrganizer();
+  const { mutateAsync: updateUser, isPending: pendingUpdate } = useUpdateUser();
   const session = useSession();
 
   const initialValues = {
     fullName: getUser?.fullName || "",
-    bankAccount: getUser?.bankAccount || "",
-    bankName: getUser?.bankName || "",
-    phoneNumber: getUser?.phoneNumber || "",
     email: getUser?.email || "",
-    profilePict: null,
   };
 
   const formik = useFormik({
@@ -68,7 +63,7 @@ export default function UpdateProfileForm() {
   return (
     <div className="container mx-auto p-6">
       <div className="mx-auto max-w-6xl">
-        <Link href="/dashboard/account">
+        <Link href="/account">
           <Button variant="outline" size="icon" className="my-2">
             <ArrowLeft className="h-4 w-4" />
           </Button>
@@ -78,7 +73,7 @@ export default function UpdateProfileForm() {
           {/* Main Content */}
           <div className="md:col-span-3">
             <div>
-              <h2 className="mb-1 text-xl font-semibold">Profile</h2>
+              <h2 className="mb-1 text-xl font-semibold">Account</h2>
               <p className="mb-6 text-sm text-gray-500">
                 Change your account information.
               </p>
@@ -101,7 +96,7 @@ export default function UpdateProfileForm() {
                     </p>
                   )}
                   <p className="text-sm text-gray-500">
-                    This is your organizer display name. 
+                    This is your display name. Please use real name.
                   </p>
                 </div>
 
@@ -131,100 +126,6 @@ export default function UpdateProfileForm() {
                     settings.
                   </p>
                 </div>
-
-                <div className="grid gap-2">
-                  <Label htmlFor="phoneNumber">Phone Number</Label>
-                  <Input
-                    id="phoneNumber"
-                    name="phoneNumber"
-                    type="text"
-                    placeholder="Phone Number"
-                    value={formik.values.phoneNumber}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                  />
-                  {!!formik.touched.phoneNumber &&
-                    !!formik.errors.phoneNumber && (
-                      <p className="text-xs text-red-600">
-                        {formik.errors.phoneNumber}
-                      </p>
-                    )}
-                </div>
-
-                <div className="grid gap-2">
-                  <Label htmlFor="bankName">Bank Name</Label>
-                  <Input
-                    id="bankName"
-                    name="bankName"
-                    type="text"
-                    placeholder="Bank Name"
-                    value={formik.values.bankName}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                  />
-                  {!!formik.touched.bankName && !!formik.errors.bankName && (
-                    <p className="text-xs text-red-600">
-                      {formik.errors.bankName}
-                    </p>
-                  )}
-                </div>
-
-                <div className="grid gap-2">
-                  <Label htmlFor="bankAccount">Bank Account</Label>
-                  <Input
-                    id="bankAccount"
-                    name="bankAccount"
-                    type="text"
-                    placeholder="Bank Account"
-                    value={formik.values.bankAccount}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                  />
-                  {!!formik.touched.bankAccount &&
-                    !!formik.errors.bankAccount && (
-                      <p className="text-xs text-red-600">
-                        {formik.errors.bankAccount}
-                      </p>
-                    )}
-                </div>
-
-                {/* Profile Picture */}
-                {selectedImage ? (
-                  <>
-                    <div className="relative h-[150px] w-[150px] overflow-hidden rounded-full">
-                      <Image
-                        src={selectedImage || "/placeholder.svg"}
-                        alt="Profile Picture"
-                        className="object-cover"
-                        fill
-                      />
-                    </div>
-                    <Button
-                      variant="destructive"
-                      type="button"
-                      onClick={removeProfilePict}
-                    >
-                      Remove Image
-                    </Button>
-                  </>
-                ) : (
-                  <div className="grid gap-2">
-                    <Label htmlFor="profilePict">Profile Picture</Label>
-                    <Input
-                      ref={profilePictRef}
-                      id="profilePict"
-                      type="file"
-                      accept="image/*"
-                      onChange={onChangeProfilePict}
-                    />
-                    {!!formik.touched.profilePict &&
-                      !!formik.errors.profilePict && (
-                        <p className="text-xs text-red-600">
-                          {formik.errors.profilePict}
-                        </p>
-                      )}
-                  </div>
-                )}
 
                 <div className="flex justify-end">
                   <Button

@@ -82,7 +82,7 @@ const ResetPasswordForm: FC<ResetPasswordFormProps> = ({ token }) => {
                   )}
               </div>
 
-              <Button type="submit" className="w-full">
+              <Button type="submit" className="w-full bg-blue-800 hover:cursor-pointer hover:bg-blue-700">
                 {isPending ? "Loading..." : "Send"}
               </Button>
             </div>
