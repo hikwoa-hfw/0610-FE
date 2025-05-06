@@ -9,4 +9,5 @@ export interface User {
   phoneNumber?: string | null;
   fullName: string;
   referralCode?: string | null;
+  createdAt?: string | Date | null
 }

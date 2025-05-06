@@ -20,6 +20,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FC, useState } from "react";
 import ModalDetailTransaction from "./components/ModalDetailTransaction";
+import { parseAsInteger, useQueryState } from "nuqs";
+import PaginationSection from "@/components/Pagination";
 
 interface TransactionsManagementPageProps {
   slug: string;
@@ -28,7 +30,15 @@ interface TransactionsManagementPageProps {
 const TransactionsManagementPage: FC<TransactionsManagementPageProps> = ({
   slug,
 }) => {
-  const { data: transactions, isPending } = useGetTransactionsByEventSlug(slug);
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+
+  const { data: transactions, isPending } = useGetTransactionsByEventSlug(
+    slug,
+    {
+      page,
+      take: 10,
+    },
+  );
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleRowClick = (transaction: any) => {
@@ -50,6 +60,10 @@ const TransactionsManagementPage: FC<TransactionsManagementPageProps> = ({
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   });
+
+  const onChangePage = (page: number) => {
+    setPage(page);
+  };
 
   return (
     <SidebarProvider>
@@ -137,6 +151,16 @@ const TransactionsManagementPage: FC<TransactionsManagementPageProps> = ({
                 </div>
               </div>
             </div>
+          </div>
+        )}
+        {transactions && transactions.data.length > 0 && (
+          <div className="mb-10">
+            <PaginationSection
+              onChangePage={onChangePage}
+              page={transactions.meta.page}
+              total={transactions.meta.total}
+              take={transactions.meta.take}
+            />
           </div>
         )}
       </SidebarInset>

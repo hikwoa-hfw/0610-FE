@@ -16,6 +16,7 @@ import Image from "next/image";
 import { ChangeEvent, FC, useRef, useState } from "react";
 import ModalDeleteEvent from "./ModalDeleteEvent";
 import useDeleteEvent from "@/hooks/api/events/useDeleteEvent";
+import Link from "next/link";
 const TiptapRichtextEditor = dynamic(
   () => import("@/components/TipTapRichTextEditor"),
   { ssr: false },
@@ -61,6 +62,7 @@ const EditEventForm: FC<EditEventFormProps> = ({ slug }) => {
       setSelectedImage(URL.createObjectURL(files[0]));
     }
   };
+
 
   const handleDelete = async () => {
     await deleteEvent(slug);
@@ -183,6 +185,12 @@ const EditEventForm: FC<EditEventFormProps> = ({ slug }) => {
       )}
       <div className="flex justify-end">
         <div className="space-x-4">
+          <Link href="/dashboard/events">
+          <Button className="my-10">
+            Cancel
+          </Button>
+          </Link>
+
           <ModalDeleteEvent
             isPending={isPendingDeleteEvent}
             onClick={handleDelete}

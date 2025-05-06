@@ -41,7 +41,7 @@ const PaginationSection: FC<PaginationSectionProps> = ({
     <Pagination>
       <PaginationContent>
         <PaginationItem>
-          <PaginationPrevious onClick={handlePrev} />
+          <PaginationPrevious onClick={handlePrev}/>
         </PaginationItem>
         <PaginationItem>
           <PaginationLink href="#" isActive>

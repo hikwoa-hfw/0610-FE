@@ -28,9 +28,21 @@ const useUpdateOrganizer = () => {
       if (payload.fullName) updateUserForm.append("fullName", payload.fullName);
       if (payload.email) updateUserForm.append("email", payload.email);
       if (payload.password) updateUserForm.append("password", payload.password);
+      if (payload.phoneNumber)
+        updateUserForm.append("phoneNumber", payload.phoneNumber);
+      if (payload.bankAccount) {
+        updateUserForm.append("bankAccount", payload.bankAccount);
+      }
+      if (payload.bankName) {
+        updateUserForm.append("bankName", payload.bankName);
+      }
+      
+      if (payload.profilePict) {
+        updateUserForm.append("profilePict", payload.profilePict);
+      }
 
       const { data } = await axiosInstance.patch(
-        `/users/update-user`,
+        `/users/update-organizer`,
         updateUserForm,
       );
 

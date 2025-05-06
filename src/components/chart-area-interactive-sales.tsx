@@ -272,8 +272,7 @@ export function ChartAreaInteractiveSales() {
                 axisLine={false}
                 tickMargin={8}
                 width={30}
-                tickCount={5}
-                // Dynamic number of ticks based on available height
+                tickCount={4}
                 interval="preserveStartEnd"
               />
               <ChartTooltip

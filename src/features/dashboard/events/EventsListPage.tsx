@@ -4,7 +4,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import Loading from "@/components/Loading";
 import { SiteHeader } from "@/components/site-header";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button"; // Added Button import
+import { Button } from "@/components/ui/button"; 
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import {
   Table,
@@ -14,20 +14,29 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {parseAsInteger, useQueryState} from 'nuqs'
 import useGetEventsByOrganizer from "@/hooks/api/events/useGetEventsByOrganizer";
 
-import { CalendarDays, MapPin, Plus } from "lucide-react"; // Added Plus icon
+import { CalendarDays, MapPin, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
+import PaginationSection from "@/components/Pagination";
 
 export default function EventsTransactionsPage() {
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const router = useRouter();
-  const { data: events, isPending } = useGetEventsByOrganizer();
+  const { data: events, isPending } = useGetEventsByOrganizer(
+    {
+      page,
+      take: 10,
+    },
+  );
 
   console.log("events", events);
 
   const handleRowClick = (slug: string) => {
     router.push(`/dashboard/events/edit/${slug}`);
   };
+
 
   const handleCreateEvent = () => {
     router.push("/dashboard/events/create");
@@ -39,6 +48,10 @@ export default function EventsTransactionsPage() {
       month: "short",
       day: "numeric",
     });
+  };
+
+  const onChangePage = (page: number) => {
+    setPage(page);
   };
 
   return (
@@ -59,8 +72,8 @@ export default function EventsTransactionsPage() {
                       Manage or edit your events by clicking on the list.
                     </p>
                   </div>
-                  <Button onClick={handleCreateEvent}>
-                    <Plus className="mr-2 h-4 w-4" /> Create Event
+                  <Button onClick={handleCreateEvent} className="bg-blue-800 hover:cursor-pointer hover:bg-blue-700">
+                    <Plus className="mr-2 h-4 w-4 " /> Create Event
                   </Button>
                 </div>
                 <div className="rounded-md border">
@@ -107,6 +120,7 @@ export default function EventsTransactionsPage() {
                               <Badge variant="outline">{event.category}</Badge>
                             </TableCell>
                           </TableRow>
+                          
                         ))
                       ) : (
                         <TableRow>
@@ -120,6 +134,16 @@ export default function EventsTransactionsPage() {
                 </div>
               </div>
             </div>
+          </div>
+        )}
+        {events && events.data.length > 0 && (
+          <div className="mb-10">
+          <PaginationSection
+          onChangePage={onChangePage}
+          page={events.meta.page}
+          total={events.meta.total}
+          take={events.meta.take}
+          />
           </div>
         )}
       </SidebarInset>

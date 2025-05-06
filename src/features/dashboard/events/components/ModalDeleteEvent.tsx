@@ -19,12 +19,15 @@ interface ModalDeleteEventProps {
   isPending: boolean;
 }
 
-const ModalDeleteEvent: FC<ModalDeleteEventProps> = ({ isPending, onClick }) => {
+const ModalDeleteEvent: FC<ModalDeleteEventProps> = ({
+  isPending,
+  onClick,
+}) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger disabled={isPending} asChild>
-        <Button variant="destructive" size="icon">
-          <Trash2 />
+        <Button variant="destructive" className="py-4 hover:bg-red-500 hover:cursor-pointer">
+          Delete Event
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
@@ -36,8 +39,8 @@ const ModalDeleteEvent: FC<ModalDeleteEventProps> = ({ isPending, onClick }) => 
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction className="bg-red-500" onClick={onClick}>
+          <AlertDialogCancel className="hover:cursor-pointer">Cancel</AlertDialogCancel>
+          <AlertDialogAction className="bg-red-500 hover:cursor-pointer" onClick={onClick}>
             Continue
           </AlertDialogAction>
         </AlertDialogFooter>

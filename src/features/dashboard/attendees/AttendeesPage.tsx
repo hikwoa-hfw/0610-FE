@@ -21,14 +21,19 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FC, useState } from "react";
 import ModalDetailTransaction from "./components/ModalDetailTransaction";
+import PaginationSection from "@/components/Pagination";
+import { parseAsInteger, useQueryState } from "nuqs";
 
 interface TransactionsManagementPageProps {
   slug: string;
 }
 
 const AttendeesPage: FC<TransactionsManagementPageProps> = ({ slug }) => {
-  const router = useRouter();
-  const { data: attendees, isPending } = useGetAttendees(slug);
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+  const { data: attendees, isPending } = useGetAttendees(slug, {
+    page,
+    take: 10,
+  });
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleRowClick = (transaction: any) => {
@@ -51,7 +56,9 @@ const AttendeesPage: FC<TransactionsManagementPageProps> = ({ slug }) => {
     maximumFractionDigits: 0, // Pastikan tidak ada angka di belakang koma
   });
 
-  
+  const onChangePage = (page: number) => {
+    setPage(page);
+  };
 
   return (
     <SidebarProvider>
@@ -61,86 +68,97 @@ const AttendeesPage: FC<TransactionsManagementPageProps> = ({ slug }) => {
         {isPending ? (
           <Loading />
         ) : (
-        <div className="flex flex-1 flex-col">
-          <div className="@container/main flex flex-1 flex-col gap-2">
-            <div className="flex flex-col gap-4 px-4 py-4 md:gap-6 md:py-6">
-              <div className="space-y-2">
-                <Link href="/dashboard/attendees">
-                  <Button variant="outline" size="icon" className="my-2">
-                    <ArrowLeft className="h-4 w-4" />
-                  </Button>
-                </Link>
+          <div className="flex flex-1 flex-col">
+            <div className="@container/main flex flex-1 flex-col gap-2">
+              <div className="flex flex-col gap-4 px-4 py-4 md:gap-6 md:py-6">
+                <div className="space-y-2">
+                  <Link href="/dashboard/attendees">
+                    <Button variant="outline" size="icon" className="my-2">
+                      <ArrowLeft className="h-4 w-4" />
+                    </Button>
+                  </Link>
 
-                <h2 className="text-2xl font-bold md:text-4xl">
-                  Attendees List on {attendees?.data[0]?.events?.name || "N/A"}
-                </h2>
+                  <h2 className="text-2xl font-bold md:text-4xl">
+                    Attendees List on{" "}
+                    {attendees?.data[0]?.events?.name || "N/A"}
+                  </h2>
 
-                <p className="text-muted-foreground">
-                  View your attendees detail by clicking on the list.
-                </p>
-              </div>
-              <div className="rounded-md border">
-                <Table>
-                  <TableHeader>
-                    <TableRow className="grid-cols-3 justify-items-center">
-                      <TableHead>Name</TableHead>
-                      <TableHead>Transaction UUID</TableHead>
-                      <TableHead>Quantity</TableHead>
-                      <TableHead>Total Price</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {attendees && attendees.data.length > 0 ? (
-                      attendees.data.map((attendee) => (
-                        <TableRow
-                          key={attendee.id}
-                          className="hover:bg-muted/50 cursor-pointer"
-                          onClick={() => handleRowClick(attendee)}
-                        >
-                          <TableCell className="font-medium">
-                            {attendee.users.fullName}
-                          </TableCell>
-                          <TableCell className="font-medium">
-                            {attendee.uuid}
-                          </TableCell>
-                          <TableCell>
-                            <div className="flex items-center gap-1">
-                              <Badge variant="outline">
-                                {attendee.transaction_details?.reduce(
-                                  (total: number, detail: any) =>
-                                    total + detail.qty,
-                                  0,
-                                )}
-                              </Badge>
-                            </div>
-                          </TableCell>
-                          <TableCell>
-                            <div className="flex items-center gap-1">
-                              {formatter.format(attendee.totalPrice)}
-                            </div>
+                  <p className="text-muted-foreground">
+                    View your attendees detail by clicking on the list.
+                  </p>
+                </div>
+                <div className="rounded-md border">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="grid-cols-3 justify-items-center">
+                        <TableHead>Name</TableHead>
+                        <TableHead>Transaction UUID</TableHead>
+                        <TableHead>Quantity</TableHead>
+                        <TableHead>Total Price</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {attendees && attendees.data.length > 0 ? (
+                        attendees.data.map((attendee) => (
+                          <TableRow
+                            key={attendee.id}
+                            className="hover:bg-muted/50 cursor-pointer"
+                            onClick={() => handleRowClick(attendee)}
+                          >
+                            <TableCell className="font-medium">
+                              {attendee.users.fullName}
+                            </TableCell>
+                            <TableCell className="font-medium">
+                              {attendee.uuid}
+                            </TableCell>
+                            <TableCell>
+                              <div className="flex items-center gap-1">
+                                <Badge variant="outline">
+                                  {attendee.transaction_details?.reduce(
+                                    (total: number, detail: any) =>
+                                      total + detail.qty,
+                                    0,
+                                  )}
+                                </Badge>
+                              </div>
+                            </TableCell>
+                            <TableCell>
+                              <div className="flex items-center gap-1">
+                                {formatter.format(attendee.totalPrice)}
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        ))
+                      ) : (
+                        <TableRow>
+                          <TableCell colSpan={3} className="py-6 text-center">
+                            No transactions found. Try adjusting your search.
                           </TableCell>
                         </TableRow>
-                      ))
-                    ) : (
-                      <TableRow>
-                        <TableCell colSpan={3} className="py-6 text-center">
-                          No transactions found. Try adjusting your search.
-                        </TableCell>
-                      </TableRow>
-                    )}
-                  </TableBody>
-                </Table>
-                {selectedTransaction && (
-                  <ModalDetailTransaction
-                    isOpen={isModalOpen}
-                    onClose={() => setIsModalOpen(false)}
-                    transaction={selectedTransaction}
-                  />
-                )}
+                      )}
+                    </TableBody>
+                  </Table>
+                  {selectedTransaction && (
+                    <ModalDetailTransaction
+                      isOpen={isModalOpen}
+                      onClose={() => setIsModalOpen(false)}
+                      transaction={selectedTransaction}
+                    />
+                  )}
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
+        {attendees && attendees.data.length > 0 && (
+          <div className="mb-10">
+            <PaginationSection
+              onChangePage={onChangePage}
+              page={attendees.meta.page}
+              total={attendees.meta.total}
+              take={attendees.meta.take}
+            />
+          </div>
         )}
       </SidebarInset>
     </SidebarProvider>

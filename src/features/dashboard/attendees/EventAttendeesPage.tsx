@@ -2,6 +2,7 @@
 
 import { AppSidebar } from "@/components/app-sidebar";
 import Loading from "@/components/Loading";
+import PaginationSection from "@/components/Pagination";
 import { SiteHeader } from "@/components/site-header";
 import { Badge } from "@/components/ui/badge";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
@@ -17,10 +18,15 @@ import useGetEventsByOrganizer from "@/hooks/api/events/useGetEventsByOrganizer"
 
 import { CalendarDays, MapPin } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { parseAsInteger, useQueryState } from "nuqs";
 
 export default function EventAttendeesPage() {
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const router = useRouter();
-  const { data: events, isPending } = useGetEventsByOrganizer();
+  const { data: events, isPending } = useGetEventsByOrganizer({
+    page,
+    take: 10,
+  });
   console.log("events", events);
 
   const handleRowClick = (slug: string) => {
@@ -33,6 +39,10 @@ export default function EventAttendeesPage() {
       month: "short",
       day: "numeric",
     });
+  };
+
+  const onChangePage = (page: number) => {
+    setPage(page);
   };
 
   return (
@@ -109,6 +119,16 @@ export default function EventAttendeesPage() {
                 </div>
               </div>
             </div>
+          </div>
+        )}
+        {events && events.data.length > 0 && (
+          <div className="mb-10">
+            <PaginationSection
+              onChangePage={onChangePage}
+              page={events.meta.page}
+              total={events.meta.total}
+              take={events.meta.take}
+            />
           </div>
         )}
       </SidebarInset>

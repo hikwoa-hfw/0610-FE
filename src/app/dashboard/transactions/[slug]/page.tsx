@@ -8,10 +8,9 @@ const Transaction = async ({
   params: Promise<{ slug: string }>;
 }) => {
   const session = await auth();
-
-  if (session?.user.role !== "ORGANIZER") {
-    return redirect("/login");
-  }
+  
+  if (!session) return redirect("/login");
+  if (session.user.role !== "ORGANIZER") redirect("/");
 
   const slug = (await params).slug;
 
