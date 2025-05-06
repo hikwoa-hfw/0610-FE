@@ -4,7 +4,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import Loading from "@/components/Loading";
 import { SiteHeader } from "@/components/site-header";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button"; // Added Button import
+import { Button } from "@/components/ui/button"; 
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import {
   Table,
@@ -36,6 +36,7 @@ export default function EventsTransactionsPage() {
   const handleRowClick = (slug: string) => {
     router.push(`/dashboard/events/edit/${slug}`);
   };
+
 
   const handleCreateEvent = () => {
     router.push("/dashboard/events/create");

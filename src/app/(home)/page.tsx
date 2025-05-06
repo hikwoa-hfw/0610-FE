@@ -10,6 +10,7 @@ export default function Home() {
   const session = useSession()
   const logout = () => {
     signOut();
+    signOut();
     router.push("/login");
   };
   return (

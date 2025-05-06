@@ -8,7 +8,7 @@ interface Payload extends Omit<User, "profilePict"> {
   profilePict: File | null;
 }
 
-const useUpdateUser = () => {
+const useUpdateOrganizer = () => {
   const queryClient = useQueryClient();
   const {axiosInstance} = useAxios()
 
@@ -54,4 +54,4 @@ const useUpdateUser = () => {
   });
 };
 
-export default useUpdateUser;
+export default useUpdateOrganizer;
