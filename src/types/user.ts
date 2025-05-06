@@ -2,7 +2,7 @@ export interface User {
   id: number;
   email: string;
   password: string;
-  profilePict?: string ;
+  profilePict?: string | null
   role: string;
   bankAccount?: string | null;
   bankName?: string | null;

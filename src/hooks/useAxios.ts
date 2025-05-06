@@ -25,7 +25,11 @@ const useAxios = () => {
         return response;
       },
       (err) => {
-        if (err?.response.status === 401) {
+        if (
+          err?.response.data.message === "No token provided" ||
+          err?.response.data.message === "Invalid token" ||
+          err?.response.data.message === "Token expired"
+        ) {
           signOut();
         }
 

@@ -50,9 +50,9 @@ export function RegisterOrganizerForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">Register as Organizer</CardTitle>
+          <CardTitle className="text-2xl">Register as <span className="font-bold text-blue-700">Organizer</span></CardTitle>
           <CardDescription>
-            Enter your email below to register to your account
+            Enter your data below to become organizer
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -189,7 +189,7 @@ export function RegisterOrganizerForm({
                     </p>
                   )}
               </div>
-              <Button type="submit" className="w-full" disabled={isPending}>
+              <Button type="submit" className="w-full bg-blue-900 hover:bg-blue-600" disabled={isPending}>
                 {isPending ? "Loading..." : "Register"}
               </Button>
             </div>

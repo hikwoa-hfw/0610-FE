@@ -36,9 +36,9 @@ export function LoginForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">Login</CardTitle>
+          <CardTitle className="text-2xl">Login <span className="font-bold text-blue-700">Vibration</span></CardTitle>
           <CardDescription>
-            Enter your data below to login your account
+            Enter your data below to login
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -77,7 +77,7 @@ export function LoginForm({
                   <p className="text-xs text-red-500">{formik.errors.password}</p>
                 )}
               </div>
-              <Button type="submit" className="w-full" disabled={isPending}>
+              <Button type="submit" className="w-full bg-blue-900 hover:bg-blue-600" disabled={isPending}>
                 {isPending? "Loading..." : "Login"}
               </Button>
             </div>

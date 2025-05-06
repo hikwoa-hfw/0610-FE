@@ -1,5 +1,7 @@
 import { Ticket } from "./ticket";
 import { User } from "./user";
+import { Voucher } from "./voucher";
+import { Event } from "./event";
 
 export interface Transaction {
   id: number;
@@ -14,11 +16,13 @@ export interface Transaction {
   couponId: string | null;
   userId: number;
   eventId: number;
-  createdAt: string | Date;
-  updatedAt: string | Date;
+  createdAt: string 
+  updatedAt: string 
   deletedAt: string | Date | null;
   users: User;
   transaction_details?: TransactionDetail[];
+  vouchers: Voucher
+  events: Event
 }
 
 export interface TransactionRevenue {

@@ -1,6 +1,5 @@
 "use client";
 
-import { useAuthStore } from "@/stores/auth";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";

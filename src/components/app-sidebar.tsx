@@ -11,6 +11,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import useGetUser from "@/hooks/api/user/useGetUser";
 import {
   IconCashBanknote,
   IconChartBar,
@@ -23,6 +24,7 @@ import { UsersIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import * as React from "react";
+import Unauthorized from "./Unauthorized";
 
 const data = {
   user: {
@@ -56,11 +58,13 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const router = useRouter();
+  const {data: getUser} = useGetUser()
   const session = useSession();
+  
   const user = {
-    name: session.data?.user.fullName,
-    email: session.data?.user.email,
-    avatar: session.data?.user.profilePict,
+    name: getUser?.fullName,
+    email: getUser?.email,
+    avatar: getUser?.profilePict,
   };
 
   return (
